@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  litellm-proxy:
+    image: ghcr.io/berriai/litellm:main-latest
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./litellm.config.yml:/app/config.yaml
+    environment:
+      - OLLAMA_API_BASE=http://host.docker.internal:11434
+    command: --config /app/config.yaml --detailed_debug
+    networks:
+      - llm-network
+
+  openhands:
+    image: docker.all-hands.dev/all-hands-ai/openhands:0.21
+    ports:
+      - "3000:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.openhands-state:/.openhands-state
+    environment:
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.21-nikolaik
+      - LOG_ALL_EVENTS=true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - llm-network
+    depends_on:
+      - litellm-proxy
+
+networks:
+  llm-network:
+    driver: bridge

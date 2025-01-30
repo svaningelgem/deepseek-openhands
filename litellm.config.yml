@@ -1,0 +1,9 @@
+model_list:
+  - model_name: "deepseek-r1"
+    litellm_params:
+      model: ollama/deepseek-r1:32b
+      api_base: "http://host.docker.internal:11434"
+
+general_settings:
+  port: 4000
+  num_workers: 8
