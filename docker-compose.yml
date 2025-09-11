@@ -13,7 +13,7 @@ services:
       - llm-network
 
   openhands:
-    image: docker.all-hands.dev/all-hands-ai/openhands:0.21
+    image: docker.all-hands.dev/all-hands-ai/openhands:0.28
     ports:
       - "3000:3000"
     volumes:
